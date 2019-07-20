@@ -43,6 +43,14 @@ body, html {
   color: #61dafb;
 }
 
+.center, .center-below {
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

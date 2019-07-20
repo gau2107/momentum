@@ -7,11 +7,18 @@ class App extends Component{
     curTime : undefined,
     todos : [],
     quote : {},
+    landscape : {}
   }
   componentWillMount() {
 
-    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=10')
-      .then(res => this.setState({ todos: res.data }));
+    axios.get('landscapes/credits.json').then(response => {
+      let landscapes = response.data;
+      console.log("TCL: App -> componentWillMount -> landscapes", landscapes)
+      let landscapeslength = landscapes.length;
+      console.log("TCL: App -> componentWillMount -> landscapeslength", landscapeslength)
+      this.setState({ landscape: landscapes[Math.floor(Math.random() * (+landscapeslength - +0)) + +0] })
+
+    });
 
     axios.get('quotes.json').then(response => {
       let quotes = response.data;
@@ -30,8 +37,9 @@ class App extends Component{
 
   render() {
     const curTime = this.state.curTime;
-    const todos = this.state.todos
     const quote = this.state.quote;
+    const landscape = this.state.landscape;
+    document.body.background = landscape.photo_url;
 
     return (
 
@@ -41,6 +49,7 @@ class App extends Component{
           { curTime }
       </h1>
         <footer>
+          <div>{landscape.user_name}</div>
           <div><i>"{quote.quoteText}"</i></div>
           <div>{quote.quoteAuthor}</div>
         </footer>
