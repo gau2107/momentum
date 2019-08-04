@@ -1,0 +1,68 @@
+
+.App {
+  text-align: center;
+}
+body, html {
+  height: 100%;
+}
+.Input {
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: blue
+}
+.Input:focus {
+  border-color: green
+}
+.bg {
+  /* The image used */
+
+  /* Full height */
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+  pointer-events: none;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.App-body {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.center, .center-below {
+    display: block;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    text-align: center;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
