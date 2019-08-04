@@ -5,7 +5,14 @@
 body, html {
   height: 100%;
 }
-
+.Input {
+  outline: 0;
+  border-width: 0 0 2px;
+  border-color: blue
+}
+.Input:focus {
+  border-color: green
+}
 .bg {
   /* The image used */
 
