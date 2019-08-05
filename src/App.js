@@ -5,7 +5,7 @@ import './index.css';
 import './App.css';
 import '../node_modules/material-icons/css/material-icons.css'
 import ls from 'local-storage'
-import { Input, Icon, Button, Row, Col } from 'antd';
+import { Input, Icon, Button, Row, Col, Card, Checkbox } from 'antd';
 import axios from 'axios';
 
 class App extends Component{
@@ -22,11 +22,15 @@ class App extends Component{
       auth: false,
       userName : undefined,
       greeting: undefined,
-      focus: undefined
+      focus: undefined,
+      todo: undefined
     };
     this.handleChange = this.handleChange.bind(this);
     this.addFocusOnEnterKey = this.addFocusOnEnterKey.bind(this);
     this.login = this.login.bind(this);
+    this.addTodo = this.addTodo.bind(this);
+    this.delTodo = this.delTodo.bind(this);
+    this.markComplete = this.markComplete.bind(this);
   }
 
   handleChange(event) {
@@ -38,6 +42,34 @@ class App extends Component{
    */
   login() {
     localStorage.setItem('userName', this.state.userName);
+    this.setState({ auth: true});
+  }
+
+  getTodos(){
+    let todos = localStorage.getItem('todos');
+    if(todos && todos.length){
+      this.setState({todos: JSON.parse(todos)});
+    }
+  }
+
+  delTodo(index){
+    this.state.todos.splice(index, 1);
+    localStorage.setItem('todos', JSON.stringify(this.state.todos));
+  }
+
+  markComplete(index) {
+    this.state.todos[index].completed = !this.state.todos[index].completed;
+    localStorage.setItem('todos', JSON.stringify(this.state.todos));
+
+  }
+
+  /**
+   * Add todo
+   */
+  addTodo(){
+    this.state.todos.push({title : this.state.todo, completed : false});
+    localStorage.setItem('todos', JSON.stringify(this.state.todos));
+    this.getTodos();
   }
 
   /**
@@ -119,6 +151,8 @@ class App extends Component{
 
     this.checkFocus();
 
+    this.getTodos();
+
     setInterval(() => {
       let curDateTime = new Date().toLocaleString();
       this.setState({
@@ -135,14 +169,18 @@ class App extends Component{
     }
   }
 
+
+
   render() {
 
+    const auth = this.state.auth;
     const userName = this.state.userName;
     const curTime = this.state.curTime;
     const quote = this.state.quote;
     const landscape = this.state.landscape;
     const greeting = this.state.greeting;
     const focus = this.state.focus;
+    const todos = this.state.todos;
     document.body.background = landscape.photo_url;
 
     return (
@@ -154,28 +192,32 @@ class App extends Component{
       </h1>
       {/* <middle > */}
         <div>
-          <Row>
-            <Col span={8}></Col>
-            <Col span={7}>
-            <Input
-              name="userName"
-              value = {this.state.userName}
-              onChange={this.handleChange}
-              placeholder="What's your name?"
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            />
-            </Col>
-            <Col span={1}>
-              <Button type="primary" onClick={this.login}>Done</Button>
-            </Col>
-            <Col span={8}></Col>
-          </Row>
+          {!auth ? (
+            <Row>
+              <Col span={8}></Col>
+              <Col span={7}>
+                <Input
+                  name="userName"
+                  value={this.state.userName}
+                  onChange={this.handleChange}
+                  placeholder="What's your name?"
+                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                />
+              </Col>
+              <Col span={1}>
+                <Button type="primary" onClick={this.login}>Done</Button>
+              </Col>
+              <Col span={8}></Col>
+            </Row>
+          ):(
+            <Row></Row>
+          )}
+
         </div>
         {/* </middle> */}
         <footer>
           <div>{landscape.user_name}
           </div>
-          <i className="material-icons">sync</i>
 
           <div><i>"{quote.quoteText}"</i></div>
           <div>{quote.quoteAuthor}</div>
@@ -199,6 +241,41 @@ class App extends Component{
 
         </Row>
         <label>{ focus }</label>
+
+        {/* Todos */}
+        <div>
+          <div style={{ background: 'transparent', padding: '30px' }}>
+            <Card title="Todos" bordered={false} style={{ width: 300 }}>
+              {todos.map((todo, index) => {
+                return (
+                  <p>
+                    <Checkbox onChange={() => { this.markComplete(index) }} checked={todo.completed}></Checkbox>
+                    {todo.completed ? (
+                      <span style={{ textDecoration: 'line-through' }}> {todo.title} </span>
+                    ) : (
+                        <span> {todo.title} </span>
+                      )}
+                    <Icon style={{ color: 'red' }} type="delete" onClick={() => {this.delTodo(index)}}></Icon> </p>
+                );
+              })}
+
+              <Row>
+                <Col span={20}>
+                  <Input
+                    value={this.state.todo}
+                    name="todo"
+                    onChange={this.handleChange}
+                  ></Input>
+                  </Col>
+                <Col span={4}>
+                  <Button type="primary" icon="plus" onClick={this.addTodo}></Button>
+                </Col>
+              </Row>
+
+            </Card>
+          </div>,
+        </div>
+
       </div>
     );
   }
