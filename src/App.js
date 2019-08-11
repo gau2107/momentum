@@ -5,6 +5,7 @@ import './index.css';
 import './App.css';
 import '../node_modules/material-icons/css/material-icons.css'
 import ls from 'local-storage'
+import ReactAnimatedWeather from 'react-animated-weather';
 import { Input, Icon, Button, Row, Col, Card, Checkbox } from 'antd';
 import axios from 'axios';
 
@@ -173,6 +174,13 @@ class App extends Component{
 
   render() {
 
+    const defaults = {
+      icon: 'PARTLY_CLOUDY_DAY',
+      color: 'white',
+      size: 100,
+      animate: true
+    };
+
     const auth = this.state.auth;
     const userName = this.state.userName;
     const curTime = this.state.curTime;
@@ -185,9 +193,17 @@ class App extends Component{
 
     return (
 
-      <div className="App" >
-        <h1>{greeting} {userName}!</h1>
-        <h1>
+      <div className="App"><br></br>
+        <div>
+          <ReactAnimatedWeather
+            icon={defaults.icon}
+            color={defaults.color}
+            size={defaults.size}
+            animate={defaults.animate}
+          />
+        </div>
+        <h1 style={{color: 'white', fontSize: '50px', fontFamily: 'serif', textShadow: '0 1px 5px rgba(0,0,0,.1)'}}>{greeting} {userName}!</h1>
+        <h1 style={{ color: 'white', fontSize: '70px', fontFamily: 'monospace', textShadow: '0 1px 5px rgba(0,0,0,.1)'}}>
           { curTime }
       </h1>
       {/* <middle > */}
@@ -197,6 +213,11 @@ class App extends Component{
               <Col span={8}></Col>
               <Col span={7}>
                 <Input
+                  style={{
+                    borderWidth: '3px', borderTopStyle: 'none', borderLeftStyle: 'none',borderRightStyle: 'none',
+                    color: 'white', borderBottomColor: 'white', background: 'transparent', fontWeight: 'bold', fontSize: '32px'
+                    , textShadow: '0 1px 5px rgba(0,0,0,.1)'
+                  }}
                   name="userName"
                   value={this.state.userName}
                   onChange={this.handleChange}
@@ -215,8 +236,8 @@ class App extends Component{
 
         </div>
         {/* </middle> */}
-        <footer>
-          <div>{landscape.user_name}
+        <footer style={{ color: 'white', fontSize: 'x-large', textShadow: '0 1px 5px rgba(0,0,0,.1)'}}>
+          <div >{landscape.user_name}
           </div>
 
           <div><i>"{quote.quoteText}"</i></div>
@@ -228,7 +249,10 @@ class App extends Component{
           <Col span={7}></Col>
           <Col span={10}>
             <Input
-              addonAfter={<Icon type="enter" />}
+              style={{
+                borderWidth: '3px', borderTopStyle: 'none', borderLeftStyle: 'none', borderRightStyle: 'none',
+                color: 'white', borderBottomColor: 'white', background: 'transparent', fontSize: '32px', textShadow: '0 1px 5px rgba(0,0,0,.1)'
+              }}
               size="large"
               name="focus"
               value={this.state.focus}
@@ -244,14 +268,16 @@ class App extends Component{
 
         {/* Todos */}
         <div>
-          <div style={{ background: 'transparent', padding: '30px' }}>
-            <Card title="Todos" bordered={false} style={{ width: 300 }}>
+          <div style={{ background: 'transparent', padding: '30px', color: 'white'}}>
+            <Card title={<span style={{color: "white"}}>Title</span>} bordered={false}
+              style={{ width: 300, color: "white", background: "rgba(50, 50, 50, 0.5)", textShadow: "0 1px 5px rgba(0,0,0,.1)" }}
+            >
               {todos.map((todo, index) => {
                 return (
                   <p>
                     <Checkbox onChange={() => { this.markComplete(index) }} checked={todo.completed}></Checkbox>
                     {todo.completed ? (
-                      <span style={{ textDecoration: 'line-through' }}> {todo.title} </span>
+                      <span style={{ textDecoration: 'line-through', fontSize: '15px' }}> {todo.title} </span>
                     ) : (
                         <span> {todo.title} </span>
                       )}
@@ -262,6 +288,11 @@ class App extends Component{
               <Row>
                 <Col span={20}>
                   <Input
+                    style={{
+                      borderWidth: '3px', borderTopStyle: 'none', borderLeftStyle: 'none', borderRightStyle: 'none',
+                      color: 'white', borderBottomColor: 'white', background: 'transparent'
+                      , textShadow: '0 1px 5px rgba(0,0,0,.1)'
+                    }}
                     value={this.state.todo}
                     name="todo"
                     onChange={this.handleChange}
